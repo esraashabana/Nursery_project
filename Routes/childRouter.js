@@ -11,7 +11,37 @@
  *             schema:
  *               type: array
  *               items:
- *                 $ref: './../Models/childSchema'
+ *                 $ref: './../Models/childSchema.json'
+ *   post:
+ *     description: Insert data into child
+ *     responses:
+ *       201:
+ *         description: Inserted data in child
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               $ref: './../Models/childSchema.json'
+ *   put:
+ *     description: Update child
+ *     responses:
+ *       200:
+ *         description: Updated child
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               $ref: './../Models/childSchema.json'
+ * put:
+ *     description: delete child
+ *     responses:
+ *       200:
+ *         description: delete child
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               $ref: './../Models/childSchema.json'
  */
 const express=require("express");
 const cotroller=require("./../Controllers/childController");

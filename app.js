@@ -1,3 +1,4 @@
+require('dotenv').config();
 const teacherRouter = require("./Routes/teacherRouter");
 const classRouter = require("./Routes/classRouter");
 const childRouter = require("./Routes/childRouter");
@@ -8,9 +9,9 @@ const swaggerJsdoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 const express = require("express");//import
 const server = express();//create server
-
+//i use bcrypt for password encryption
 const port = process.env.PORT || 8080;
-mongoose.connect("mongodb://127.0.0.1:27017/NurseryDBV2")
+mongoose.connect(process.env.DB_URL)
         .then(() => {
                 console.log("Connected to the database");
                 server.listen(port, () => {

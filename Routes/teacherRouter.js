@@ -1,3 +1,48 @@
+/**
+ * @swagger
+ * /teacher:
+ *   get:
+ *     description: Returns a list of teachers
+ *     responses:
+ *       200:
+ *         description: A list of teachers
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: './../Models/teacherSchema.json'
+ *   post:
+ *     description: Insert data into teacher
+ *     responses:
+ *       201:
+ *         description: Inserted data in teacher
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               $ref: './../Models/teacherSchema.json'
+ *   put:
+ *     description: Update teacher
+ *     responses:
+ *       200:
+ *         description: Updated teacher
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               $ref: './../Models/teacherSchema.json'
+ * put:
+ *     description: delete teacher
+ *     responses:
+ *       200:
+ *         description: delete teacher
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               $ref: './../Models/teacherSchema.json'
+ */
 const express = require("express");
 const Controller = require("./../Controllers/teacherController");
 const mwValidation=require("./../MiddleWares/validationMW");
