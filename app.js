@@ -93,12 +93,18 @@ server.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 //app.get,app.post
 server.use(bodyParser.json());//express.json
 server.use(bodyParser.urlencoded({ extended: false }));
-server.use(authentication);
-server.use(authMiddleWare);
-server.use("/",changePassword);
+
+
+
+//server.use(authentication);
+//server.use(authMiddleWare);
+server.use("/",changePassword);//revise//////////////////////////////
 server.use(teacherRouter);
 server.use(classRouter);
 server.use(childRouter);
+
+
+
 
 //not found 
 server.use((req, res) => {

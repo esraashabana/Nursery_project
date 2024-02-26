@@ -22,7 +22,7 @@ module.exports.isAdmin = (req, res, next) => {
         }
 }
 
-module.exports.issTeacher = (req, res, next) => {
+module.exports.isTeacher = (req, res, next) => {
         if (req.token.role == "teacher")
                 next()
         else {

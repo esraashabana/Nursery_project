@@ -47,17 +47,22 @@ const express=require("express");
 const cotroller=require("./../Controllers/childController");
 const validation=require("./../MiddleWares/validator/childValidation");
 const validator=require("./../MiddleWares/validationMW");
+const {isAdmin,isTeacher}=require("./../MiddleWares/authMW");
 const router=express.Router();
 
 router.route("/child").get(
+        isAdmin,isTeacher,//////////////////
         cotroller.getAllChildren
 ).post(
+        isAdmin,
         validation.insertArray,validator,
         cotroller.addChild
 ).put(
+        isAdmin,
         validation.insertArray,validator,
         cotroller.updateChild
 ).delete(
+        isAdmin,
         cotroller.deleteChild
 );
 router.route("/child/:id").get(
