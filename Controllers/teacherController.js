@@ -12,7 +12,18 @@ module.exports.getAllTeachers = (req, res, next) => {
 };
 
 module.exports.getTeacherById = (req, res) => {
-        res.json({ data: "from get teacher by id" });
+    const teacherId = req.body.id;
+    teacher.findById(teacherId)
+        .then((data) => {
+            if (!data) {
+                res.status(404).json({ message: "Teacher not found" });
+            } else {
+                res.status(200).json(data);
+            }
+        })
+        .catch((error) => {
+            next(error);
+        });
 };
 
 module.exports.addTeacher = (req, res, next) => {
@@ -42,7 +53,16 @@ module.exports.addTeacher = (req, res, next) => {
     
 
 module.exports.updateTeacher = (req, res) => {
-        res.json({ data: "from put teacher" });
+        try {
+                // Find the teacher by ID and update it with the new data
+                const updatedTeacher = teacher.findByIdAndUpdate(id, updateData, { new: true });
+                if (!updatedTeacher) {
+                    throw new Error("Teacher not found");
+                }
+                return updatedTeacher;
+            } catch (error) {
+                throw error;
+            }
 };
 
 module.exports.deleteTeacher = (req, res) => {

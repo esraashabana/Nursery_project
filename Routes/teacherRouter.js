@@ -1,6 +1,6 @@
 /**
  * @swagger
- * /teacher:
+ * /teachers:
  *   get:
  *     description: Returns a list of teachers
  *     responses:

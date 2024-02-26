@@ -12,6 +12,8 @@ const express = require("express");//import
 const server = express();//create server
 const multer = require('multer');
 const path = require('path');
+const authentication=require("./Routes/authenticationRoute");
+const authMiddleWare=require("./MiddleWares/authMW");
 
 const storage = multer.diskStorage({
         destination: function (req, file, cb) {
@@ -48,8 +50,6 @@ mongoose.connect(process.env.DB_URL)
         .catch((error) => {
                 console.log("Error connecting to the database", error);
         });
-
-
 // Multer storage configuration
 
 
@@ -64,8 +64,8 @@ const options = {
         definition: {
           openapi: '3.0.0',
           info: {
-            title: 'Your API Name',
-            description: 'Description of your API',
+            title: 'Nursery',
+            description: 'An app for nursery with 3 roles',
             version: '1.0.0',
           },
         },
@@ -93,24 +93,16 @@ server.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 //app.get,app.post
 server.use(bodyParser.json());//express.json
 server.use(bodyParser.urlencoded({ extended: false }));
+server.use(authentication);
+server.use(authMiddleWare);
 server.use("/",changePassword);
 server.use(teacherRouter);
 server.use(classRouter);
 server.use(childRouter);
 
-
-
-
-
-
-
-
-
-
 //not found 
 server.use((req, res) => {
         res.status(404).json({ data: "not foundd" });
-
 });
 
 //error middleware

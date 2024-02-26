@@ -5,16 +5,13 @@ const schema = new mongoose.Schema({
         name: String,
         supervisor: {
                 type: mongoose.Schema.Types.ObjectId,
-                ref: teachers
+                ref: "teachers"
         },
         //carry array of children ids
         children: [{
                 type: mongoose.Schema.Types.ObjectId,
-                ref: Child
-        }
-        ]
-
-
+                ref: "Child"
+        }]
 });
 
 //bind with moongoose
