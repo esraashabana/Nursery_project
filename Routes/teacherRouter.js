@@ -45,18 +45,19 @@
  */
 const express = require("express");
 const Controller = require("./../Controllers/teacherController");
-const mwValidation=require("./../MiddleWares/validationMW");
-const teacherValidation=require("./../MiddleWares/validator/teacherValidation");
+const mwValidation = require("./../MiddleWares/validationMW");
+const teacherValidation = require("./../MiddleWares/validator/teacherValidation");
 const router = express.Router();
+const uploadImg=require("./../MiddleWares/uploadImage");
 
 router.route("/teachers").get(
-       
+
         Controller.getAllTeachers
 ).post(
-        teacherValidation.insertArray,mwValidation,
+        uploadImg.single('image'),  teacherValidation.insertArray, mwValidation,
         Controller.addTeacher
 ).put(
-        teacherValidation.insertArray,mwValidation,
+        teacherValidation.insertArray, mwValidation,
         Controller.updateTeacher
 ).delete(
         Controller.deleteTeacher

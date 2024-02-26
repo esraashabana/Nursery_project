@@ -2,6 +2,7 @@ require('dotenv').config();
 const teacherRouter = require("./Routes/teacherRouter");
 const classRouter = require("./Routes/classRouter");
 const childRouter = require("./Routes/childRouter");
+const changePassword=require("./Routes/changePassword");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require("cors");
@@ -9,6 +10,32 @@ const swaggerJsdoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 const express = require("express");//import
 const server = express();//create server
+const multer = require('multer');
+const path = require('path');
+
+const storage = multer.diskStorage({
+        destination: function (req, file, cb) {
+          cb(null, 'images/'); // Uploads will be stored in the "uploads" directory
+        },
+        filename: function (req, file, cb) {
+          cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+        }
+      });
+// Initialize multer middleware
+const upload = multer({ storage: storage });
+// Serve static files from the 'views' directory
+server.use(express.static(path.join(__dirname, 'views')));
+// Route to handle image upload
+server.post('/upload', upload.single('image'), (req, res) => {
+        // Here you can handle the uploaded file
+        const file = req.file;
+        if (!file) {
+          return res.status(400).send('No file uploaded.');
+        }
+        res.send('File uploaded successfully.');
+      });
+
+
 //i use bcrypt for password encryption
 const port = process.env.PORT || 8080;
 mongoose.connect(process.env.DB_URL)
@@ -21,6 +48,10 @@ mongoose.connect(process.env.DB_URL)
         .catch((error) => {
                 console.log("Error connecting to the database", error);
         });
+
+
+// Multer storage configuration
+
 
 //middlewares
 //to determine which allowed
@@ -57,13 +88,12 @@ server.use((req, res, next) => {
         } else {
                 next();
         }
-
-
 });
 server.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 //app.get,app.post
 server.use(bodyParser.json());//express.json
 server.use(bodyParser.urlencoded({ extended: false }));
+server.use("/",changePassword);
 server.use(teacherRouter);
 server.use(classRouter);
 server.use(childRouter);
@@ -88,3 +118,9 @@ server.use((error, req, res, next) => {
         let status = error.status || 500;
         res.status(status).json({ data: error + "" });
 });
+//for testing change password
+//http://localhost:8080/teachers/change-password/65dbc9d52b3e4754c3f2b1f8 
+// {
+//         "currentPassword": "2468",
+//         "newPassword": "esraa2000"
+//}
