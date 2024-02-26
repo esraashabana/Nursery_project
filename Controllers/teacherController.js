@@ -1,6 +1,6 @@
 const express = require("express");
 const teacher = require("./../Models/teacherSchema");
-
+//return all teachers
 module.exports.getAllTeachers = (req, res, next) => {
     teacher.find({})
         .then((data) => {
@@ -10,7 +10,7 @@ module.exports.getAllTeachers = (req, res, next) => {
             next(error);
         });
 };
-
+//return a teacher
 module.exports.getTeacherById = (req, res) => {
     const teacherId = req.body.id;
     teacher.findById(teacherId)
@@ -25,11 +25,12 @@ module.exports.getTeacherById = (req, res) => {
             next(error);
         });
 };
-
+//insert new teacher
 module.exports.addTeacher = (req, res, next) => {
     const { id, firstName, lastName, email, password } = req.body;
-    const file = req.file.fileName; // Assuming you're using Multer for file uploads
+    const file = req.file.filename; // Assuming you're using Multer for file uploads
     const imagePath = file ? file.path : null;
+    console.log(req.file.filename)
 
     const newTeacher = new teacher({
         id: id,
@@ -39,7 +40,7 @@ module.exports.addTeacher = (req, res, next) => {
         },
         email: email,
         password: password,
-        image: imagePath
+        image: file
     });
 
     newTeacher.save()
@@ -51,11 +52,10 @@ module.exports.addTeacher = (req, res, next) => {
         });
 };
 
-
-module.exports.updateTeacher = (req, res) => {
+//update 
+module.exports.updateTeacher =async (req, res) => {
     try {
-        // Find the teacher by ID and update it with the new data
-        const updatedTeacher = teacher.findByIdAndUpdate(id, updateData, { new: true });
+        const updatedTeacher =await teacher.findByIdAndUpdate(id, updateData, { new: true });
         if (!updatedTeacher) {
             throw new Error("Teacher not found");
         }
@@ -64,11 +64,30 @@ module.exports.updateTeacher = (req, res) => {
         throw error;
     }
 };
-
-module.exports.deleteTeacher = (req, res) => {
-    res.json({ data: "from delete teacher" });
+//delete
+module.exports.deleteTeacher = async(req, res) => {
+    try {
+        const id = req.body.id;
+        const deletedTeacher = await teacher.findByIdAndDelete(id);
+        if (!deletedTeacher) {
+                return res.status(404).json({ error: "teacher not found" });
+        }
+        res.json({ message: "teacher deleted successfully" });
+} catch (error) {
+        console.error("Error deleting teacher:", error);
+        res.status(500).json({ error: "Internal server error" });
+}
 };
 
-module.exports.getAllClassSupervisors = (req, res) => {
-    res.json({ data: "from getAllClassSupervisors teacher" });
-};
+module.exports.getAllClassSupervisors = async(req, res) => {
+        try {
+            const classesWithSupervisors = await Class.find({ supervisor: { $exists: true, $ne: null } })
+                .populate('supervisor', 'name');
+            const supervisors = classesWithSupervisors.map(cls => cls.supervisor);
+            res.json({ supervisors });
+        } catch (error) {
+            console.error("Error getting class supervisors:", error);
+            res.status(500).json({ error: "Internal server error" });
+        }
+    }; 
+

@@ -13,6 +13,7 @@ module.exports.getAllChildren = (req, res, next) => {
                 }
         );
 };
+//insert new child
 module.exports.addChild = (req, res, next) => {
         let obj = new child(req.body);
         obj.save().then((data) => {
@@ -23,6 +24,7 @@ module.exports.addChild = (req, res, next) => {
                 next(error);
         });
 };
+//get child by id
 module.exports.getChildById = (req, res) => {
         const childId = req.body.id;
         child.findById(childId)
@@ -37,10 +39,11 @@ module.exports.getChildById = (req, res) => {
                         next(error);
                 });
 };
-module.exports.updateChild = (req, res) => {
+//update child
+module.exports.updateChild = async (req, res) => {
         try {
 
-                const updateChild = child.findByIdAndUpdate(id, updateData, { new: true });
+                const updateChild = await child.findByIdAndUpdate(id, updateData, { new: true });
                 if (!updateChild) {
                         throw new Error("child not found!!!");
                 }
@@ -49,6 +52,17 @@ module.exports.updateChild = (req, res) => {
                 throw error;
         }
 };
-module.exports.deleteChild = (req, res) => {
-        res.json({ data: "from del child" });
+//delete
+module.exports.deleteChild = async (req, res) => {
+        try {
+                const id = req.body.id;
+                const deletedChild = await child.findByIdAndDelete(id);
+                if (!deletedChild) {
+                        return res.status(404).json({ error: "Child not found" });
+                }
+                res.json({ message: "Child deleted successfully" });
+        } catch (error) {
+                console.error("Error deleting child:", error);
+                res.status(500).json({ error: "Internal server error" });
+        }
 };

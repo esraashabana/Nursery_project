@@ -11,7 +11,7 @@
  *             schema:
  *               type: array
  *               items:
- *                 $ref: './../Models/childSchema.json'
+ *                 $ref: './childSchema.json'
  *   post:
  *     description: Insert data into child
  *     responses:
@@ -21,7 +21,7 @@
  *           application/json:
  *             schema:
  *               type: object
- *               $ref: './../Models/childSchema.json'
+ *               $ref: './childSchema.json'
  *   put:
  *     description: Update child
  *     responses:
@@ -31,8 +31,8 @@
  *           application/json:
  *             schema:
  *               type: object
- *               $ref: './../Models/childSchema.json'
- * put:
+ *               $ref: './childSchema.json'
+ *   delete:
  *     description: delete child
  *     responses:
  *       200:
@@ -41,7 +41,7 @@
  *           application/json:
  *             schema:
  *               type: object
- *               $ref: './../Models/childSchema.json'
+ *               $ref: './childSchema.json'
  */
 const express=require("express");
 const cotroller=require("./../Controllers/childController");
@@ -51,7 +51,7 @@ const {isAdmin,isTeacher}=require("./../MiddleWares/authMW");
 const router=express.Router();
 
 router.route("/child").get(
-        isAdmin,isTeacher,//////////////////
+        isAdmin,isTeacher,
         cotroller.getAllChildren
 ).post(
         isAdmin,
@@ -65,6 +65,22 @@ router.route("/child").get(
         isAdmin,
         cotroller.deleteChild
 );
+
+/**
+ * @swagger
+ * /child/:id:
+ *   get:
+ *     description: return specific child
+ *     responses:
+ *       200:
+ *         description: specific child
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: './childSchema.json'
+ * */
 router.route("/child/:id").get(
         cotroller.getChildById
 );

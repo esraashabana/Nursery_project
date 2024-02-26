@@ -50,7 +50,7 @@ mongoose.connect(process.env.DB_URL)
         .catch((error) => {
                 console.log("Error connecting to the database", error);
         });
-// Multer storage configuration
+
 
 
 //middlewares
@@ -78,11 +78,6 @@ const options = {
 server.use(cors(corsOptions));
 //first
 server.use((req, res, next) => {
-        //the reson of load is not writing response 
-        //without this it will be in endless load.
-        //but if i write it here it will not pass to the next mw.
-        //so i need next();
-        //500 error , 404 not found , 200 found ,201 add, validation 422
         if (false) {
                 throw new Error("hjkjhvcvbn");
         } else {
@@ -96,9 +91,9 @@ server.use(bodyParser.urlencoded({ extended: false }));
 
 
 
-//server.use(authentication);
-//server.use(authMiddleWare);
-server.use("/",changePassword);//revise//////////////////////////////
+server.use(authentication);
+server.use(authMiddleWare);
+server.use("/",changePassword);
 server.use(teacherRouter);
 server.use(classRouter);
 server.use(childRouter);
@@ -116,9 +111,4 @@ server.use((error, req, res, next) => {
         let status = error.status || 500;
         res.status(status).json({ data: error + "" });
 });
-//for testing change password
-//http://localhost:8080/teachers/change-password/65dbc9d52b3e4754c3f2b1f8 
-// {
-//         "currentPassword": "2468",
-//         "newPassword": "esraa2000"
-//}
+

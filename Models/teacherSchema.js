@@ -15,7 +15,7 @@ const schema = new mongoose.Schema({
     image: String
 });
 
-// Hash password before saving
+// Hash password before saving using bycrypt ..
 schema.pre('save', async function(next) {
     const teacher = this;
     if (!teacher.isModified('password')) {
@@ -32,14 +32,3 @@ schema.pre('save', async function(next) {
 });
 
 module.exports = mongoose.model("teachers", schema);
-/*//for testing
-{
-    "id":1,
-    "fullName": {
-      "firstName": "John",  
-      "lastName": "Doe"
-    },
-    "password": "password",
-    "email": "john@example.com",
-    "image": "teacher.jpg"
-  }*/

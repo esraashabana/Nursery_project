@@ -11,7 +11,7 @@
  *             schema:
  *               type: array
  *               items:
- *                 $ref: './../Models/classSchema.json'
+ *                 $ref: './classSchema.json'
  *   post:
  *     description: Insert data into classes
  *     responses:
@@ -21,7 +21,7 @@
  *           application/json:
  *             schema:
  *               type: object
- *               $ref: './../Models/classSchema.json'
+ *               $ref: './classSchema.json'
  *   put:
  *     description: Update classes
  *     responses:
@@ -31,8 +31,8 @@
  *           application/json:
  *             schema:
  *               type: object
- *               $ref: './../Models/classSchema.json'
- * put:
+ *               $ref: './classSchema.json'
+ *   delete:
  *     description: delete classes
  *     responses:
  *       200:
@@ -41,7 +41,7 @@
  *           application/json:
  *             schema:
  *               type: object
- *               $ref: './../Models/classSchema.json'
+ *               $ref: './classSchema.json'
  */
 
 const express=require("express");
@@ -61,12 +61,60 @@ router.route("/class").get(
 ).delete(
         cotroller.deleteClass
 );
+/**
+ * @swagger
+ * /class/:id:
+ *   get:
+ *     description: Return class by id
+ *     responses:
+ *       200:
+ *         description: Return class by id
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: './classSchema.json'
+ */
+
 router.route("/class/:id").get(
         cotroller.getClassById
 );
+/**
+ * @swagger
+ * /class/child/:id:
+ *   get:
+ *     description: Return child in class by id
+ *     responses:
+ *       200:
+ *         description: Return child class by id
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: './classSchema.json'
+ */
+
 router.route("/class/child/:id").get(
         cotroller.getClassChildren
 );
+/**
+ * @swagger
+ * /class/teacher/:id:
+ *   get:
+ *     description: Return teacher in class by id
+ *     responses:
+ *       200:
+ *         description: Return teacher in class by id
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: './classSchema.json'
+ */
+
 router.route("/class/teacher/:id").get(
         cotroller.getClassSupervisor
 );
